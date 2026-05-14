@@ -1,26 +1,1416 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Arete Bank</title>
-</head>
-<body>
-<script src='https://areteans02.pegalabs.io/prweb/PRRestService/c11nsvc/v1/pega-embed.js' ></script>
-<pega-embed id='theEmbed' action='openAssignment' assignmentID='' casePage='assignment' appAlias='retail-loan-origination' pegaServerUrl='https://areteans02.pegalabs.io/prweb/' autoReauth='true' authService='pega' userIdentifier='BankUser' password='cnVsZXM=' clientId='75587374610678951042' style='width:100%'>
-</pega-embed>
-<script>
-        const getCaseIdEndpoint = "https://areteans02.pegalabs.io/prweb/api/DynamicCase/v1/getDynamicId";
-        async function fetchCaseId() {
-                const response = await fetch(getCaseIdEndpoint, {
-                    method: "GET",
-                    header: {}
-                });
-                    const data = await response.json();
-                    const caseId = data.AssignmentID;
-                    let embedElement = document.getElementById('theEmbed');
-                    embedElement.setAttribute("assignmentID", caseId);
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Banking | Credera</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+          Arial, sans-serif;
+        color: #131313;
+        line-height: 1.6;
+      }
+      header {
+        background: #fff;
+        padding: 20px 40px;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      header nav a {
+        margin-left: 24px;
+        text-decoration: none;
+        color: #131313;
+        font-weight: 500;
+      }
+      .hero {
+        background: #0a1628;
+        color: #fff;
+        padding: 80px 40px;
+        text-align: center;
+      }
+      .hero h1 {
+        font-size: 3rem;
+        margin-bottom: 16px;
+      }
+      .hero p {
+        max-width: 800px;
+        margin: 0 auto;
+        font-size: 1.1rem;
+        opacity: 0.9;
+      }
+      section {
+        padding: 60px 40px;
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+      section h2 {
+        font-size: 2rem;
+        margin-bottom: 24px;
+        color: #0a1628;
+      }
+      section h4 {
+        font-size: 1.4rem;
+        margin: 32px 0 16px;
+        color: #0a1628;
+      }
+      section p,
+      section li {
+        font-size: 1rem;
+        margin-bottom: 12px;
+      }
+      section ul {
+        padding-left: 20px;
+      }
+      .stat {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #ff5327;
+        margin: 20px 0 8px;
+      }
+      .stat-source {
+        font-size: 0.9rem;
+        color: #666;
+      }
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 24px;
+        margin-top: 32px;
+      }
+      .card {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 24px;
+        background: rgb(242, 245, 246);
+        transition: box-shadow 0.2s;
+      }
+      .card:hover {
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+      }
+      .card h5 {
+        font-size: 1.1rem;
+        margin-bottom: 8px;
+      }
+      .card p {
+        font-size: 0.95rem;
+        color: #555;
+      }
+      .card a {
+        display: inline-block;
+        margin-top: 12px;
+        color: #ff5327;
+        text-decoration: none;
+        font-weight: 600;
+      }
+      .quote-section {
+        background: rgb(242, 245, 246);
+        padding: 60px 40px;
+      }
+      .quote-section blockquote {
+        max-width: 900px;
+        margin: 0 auto;
+        font-size: 1.15rem;
+        font-style: italic;
+        line-height: 1.8;
+      }
+      .quote-section .author {
+        text-align: right;
+        margin-top: 16px;
+        font-style: normal;
+        font-weight: 600;
+      }
+      .experts {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 24px;
+        margin-top: 32px;
+        text-align: center;
+      }
+      .expert h5 {
+        margin-top: 8px;
+        font-size: 1rem;
+      }
+      .expert p {
+        font-size: 0.85rem;
+        color: #666;
+      }
+      .offerings {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 24px;
+        margin-top: 32px;
+      }
+      .offering {
+        background: rgb(242, 245, 246);
+        border-radius: 8px;
+        padding: 24px;
+      }
+      .offering h5 {
+        font-size: 1.1rem;
+        margin-bottom: 8px;
+      }
+      .offering p {
+        font-size: 0.95rem;
+        color: #555;
+      }
+      .offering a {
+        color: #ff5327;
+        text-decoration: none;
+        font-weight: 600;
+      }
+      .contact {
+        background: #0a1628;
+        color: #fff;
+        padding: 60px 40px;
+        text-align: center;
+      }
+      .contact h2 {
+        color: #fff;
+      }
+      .contact p {
+        max-width: 600px;
+        margin: 16px auto;
+        opacity: 0.85;
+      }
+      .contact form {
+        max-width: 600px;
+        margin: 32px auto 0;
+        text-align: left;
+      }
+      .contact label {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 0.9rem;
+      }
+      .contact input,
+      .contact textarea,
+      .contact select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 16px;
+        border: none;
+        border-radius: 4px;
+        font-size: 1rem;
+      }
+      .contact textarea {
+        height: 100px;
+        resize: vertical;
+      }
+      .contact button {
+        background: #ff5327;
+        color: #fff;
+        border: none;
+        padding: 12px 32px;
+        border-radius: 4px;
+        font-size: 1rem;
+        cursor: pointer;
+      }
+      .contact button:hover {
+        background: #cc3d1a;
+      }
+      footer {
+        background: #131313;
+        color: #aaa;
+        padding: 40px;
+      }
+      footer .footer-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 24px;
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+      footer h6 {
+        color: #fff;
+        font-size: 0.9rem;
+        margin-bottom: 12px;
+        text-transform: uppercase;
+      }
+      footer a {
+        color: #aaa;
+        text-decoration: none;
+        display: block;
+        margin-bottom: 6px;
+        font-size: 0.85rem;
+      }
+      footer a:hover {
+        color: #fff;
+      }
+      footer .copyright {
+        text-align: center;
+        margin-top: 32px;
+        font-size: 0.8rem;
+      }
+      .pega-section {
+        background: #f2f5f6;
+        padding: 48px 20px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 0;
+      }
+      /* Vertical progress stepper */
+      .progress-stepper {
+        width: 220px;
+        min-width: 220px;
+        background: #fff;
+        border-radius: 4px 0 0 4px;
+        box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+        padding: 32px 20px;
+        align-self: stretch;
+        border-top: 4px solid #ff5327;
+      }
+      .progress-stepper h4 {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        color: #888;
+        margin-bottom: 24px;
+        font-weight: 600;
+      }
+      .stepper-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        position: relative;
+      }
+      .stepper-list li {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        position: relative;
+        padding-bottom: 28px;
+      }
+      .stepper-list li:last-child {
+        padding-bottom: 0;
+      }
+      /* Vertical connecting line */
+      .stepper-list li:not(:last-child)::after {
+        content: '';
+        position: absolute;
+        left: 13px;
+        top: 28px;
+        width: 2px;
+        bottom: 0;
+        background: #ddd;
+      }
+      .stepper-list li.completed:not(:last-child)::after {
+        background: #ff5327;
+      }
+      /* Circle */
+      .step-circle {
+        width: 28px;
+        height: 28px;
+        min-width: 28px;
+        border-radius: 50%;
+        border: 2px solid #ddd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #aaa;
+        background: #fff;
+        position: relative;
+        z-index: 1;
+        transition: all 0.3s ease;
+      }
+      .stepper-list li.completed .step-circle {
+        background: #ff5327;
+        border-color: #ff5327;
+        color: #fff;
+      }
+      .stepper-list li.active .step-circle {
+        border-color: #ff5327;
+        color: #ff5327;
+        box-shadow: 0 0 0 3px rgba(255,83,39,0.15);
+      }
+      .step-label {
+        font-size: 0.82rem;
+        color: #999;
+        padding-top: 4px;
+        line-height: 1.3;
+        transition: color 0.3s ease;
+      }
+      .stepper-list li.completed .step-label {
+        color: #333;
+        font-weight: 500;
+      }
+      .stepper-list li.active .step-label {
+        color: #ff5327;
+        font-weight: 600;
+      }
+      .pega-card {
+        max-width: 820px;
+        width: 100%;
+        background: #fff;
+        border-radius: 0 4px 4px 0;
+        box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+        overflow: hidden;
+      }
+      .pega-card-top-bar {
+        height: 4px;
+        background: #ff5327;
+        width: 100%;
+      }
+      .pega-card pega-embed {
+        display: block;
+        width: 100%;
+      }
+      /* Thank you screen */
+      .thank-you-screen {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 80px 40px;
+        text-align: center;
+        min-height: 400px;
+        width: 100%;
+        max-width: 1060px;
+        background: #fff;
+        border-radius: 4px;
+        box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+        border-top: 4px solid #ff5327;
+      }
+      .thank-you-screen.visible {
+        display: flex;
+      }
+      .thank-you-check {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: #ff5327;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 24px;
+      }
+      .thank-you-check svg {
+        width: 40px;
+        height: 40px;
+        fill: none;
+        stroke: #fff;
+        stroke-width: 3;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .thank-you-screen h2 {
+        font-size: 2rem;
+        color: #0a1628;
+        margin-bottom: 16px;
+      }
+      .thank-you-screen .note-label {
+        font-weight: 700;
+        color: #ff5327;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 8px;
+      }
+      .thank-you-screen p {
+        font-size: 1.05rem;
+        color: #555;
+        max-width: 520px;
+        line-height: 1.7;
+      }
+      /* Server down message */
+      .server-down-screen {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 80px 40px;
+        text-align: center;
+        min-height: 400px;
+        width: 100%;
+        max-width: 1060px;
+        margin: 0 auto;
+        background: #fff;
+        border-radius: 4px;
+        box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+        border-top: 4px solid #ff5327;
+      }
+      .server-down-screen.visible {
+        display: flex;
+      }
+      .server-down-icon {
+        width: 72px;
+        height: 72px;
+        border-radius: 50%;
+        background: #f2f5f6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 24px;
+        font-size: 2rem;
+        color: #ff5327;
+      }
+      .server-down-screen h2 {
+        font-size: 1.6rem;
+        color: #0a1628;
+        margin-bottom: 12px;
+      }
+      .server-down-screen p {
+        font-size: 1.05rem;
+        color: #666;
+        max-width: 420px;
+        line-height: 1.7;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <a
+        href="https://www.credera.com/en-in"
+        style="
+          display: flex;
+          align-items: center;
+          text-decoration: none;
+          gap: 8px;
+        "
+        ><img
+          src="Credera_logo.png"
+          alt="Credera"
+          style="height: 40px"
+        /></a
+      >
+      <nav>
+        <a href="https://www.credera.com/en-in/industries">Industries</a>
+        <a href="https://www.credera.com/en-in/partnerships">Partners</a>
+        <a href="https://www.credera.com/en-in/insights">Insights</a>
+        <a href="https://www.credera.com/en-in/about-us/our-leadership"
+          >Leadership</a
+        >
+        <a href="https://www.credera.com/en-in/careers">Careers</a>
+        <a href="https://www.credera.com/en-in/contact">Contact Us</a>
+      </nav>
+    </header>
+    <script src="https://areteans02.pegalabs.io/prweb/PRRestService/c11nsvc/v1/pega-embed.js"></script>
+    <script>
+  (function hidePegaElements() {
+    const css = '[data-testid=":summary-item:visual"], [data-testid=":summary-item:secondary"] { display: none !important; width: 0 !important; min-width: 0 !important; margin: 0 !important; padding: 0 !important; } [data-testid=":summary-item:visual"] ~ *, [data-testid=":summary-item:primary"] { margin-left: 0 !important; padding-left: 0 !important; }';
+ 
+    function injectStyleIntoDoc(doc) {
+      if (!doc || doc.querySelector('#pega-hide-style')) return;
+      try {
+        const style = doc.createElement('style');
+        style.id = 'pega-hide-style';
+        style.textContent = css;
+        doc.head.appendChild(style);
+      } catch (e) { /* cross-origin blocked */ }
+    }
+ 
+    function tryInject() {
+      const embed = document.getElementById('theEmbed');
+      if (!embed) return;
+ 
+      // Shadow DOM
+      if (embed.shadowRoot) {
+        const style = document.createElement('style');
+        style.textContent = css;
+        if (!embed.shadowRoot.querySelector('#pega-hide-style')) {
+          style.id = 'pega-hide-style';
+          embed.shadowRoot.appendChild(style);
         }
-        fetchCaseId();
-        </script>
-</body>
+        const iframes = embed.shadowRoot.querySelectorAll('iframe');
+        iframes.forEach(function(iframe) {
+          try { injectStyleIntoDoc(iframe.contentDocument); } catch (e) {}
+        });
+      }
+ 
+      // Direct iframes inside the embed
+      const iframes = embed.querySelectorAll('iframe');
+      iframes.forEach(function(iframe) {
+        try { injectStyleIntoDoc(iframe.contentDocument); } catch (e) {}
+        iframe.addEventListener('load', function() {
+          try { injectStyleIntoDoc(iframe.contentDocument); } catch (e) {}
+        });
+      });
+    }
+ 
+    // Poll until Pega loads and retry periodically
+    const interval = setInterval(tryInject, 1000);
+    setTimeout(function() { clearInterval(interval); }, 30000);
+ 
+    // Also observe DOM for dynamically added iframes
+    const observer = new MutationObserver(tryInject);
+    observer.observe(document.body, { childList: true, subtree: true });
+  })();
+</script>
+ 
+    <div class="pega-section">
+      <div class="progress-stepper">
+        <h4>Application Journey</h4>
+        <ol class="stepper-list" id="progressStepper">
+          <li class="active" data-step="1">
+            <div class="step-circle">1</div>
+            <div class="step-label">Personal &amp; Property Information</div>
+          </li>
+          <li data-step="2">
+            <div class="step-circle">2</div>
+            <div class="step-label">Eligibility Information</div>
+          </li>
+          <li data-step="3">
+            <div class="step-circle">3</div>
+            <div class="step-label">Employment Information</div>
+          </li>
+          <li data-step="4">
+            <div class="step-circle">4</div>
+            <div class="step-label">Income Details</div>
+          </li>
+          <li data-step="5">
+            <div class="step-circle">5</div>
+            <div class="step-label">Expense Details</div>
+          </li>
+          <li data-step="6">
+            <div class="step-circle">6</div>
+            <div class="step-label">Consent &amp; Declaration</div>
+          </li>
+          <li data-step="7">
+            <div class="step-circle">7</div>
+            <div class="step-label">Case Submission</div>
+          </li>
+        </ol>
+      </div>
+      <div class="pega-card">
+        <div class="pega-card-top-bar"></div>
+        <pega-embed
+        id="theEmbed"
+        action="openAssignment"
+        assignmentID="ASSIGN-WORKLIST CRED-CREDLOS-RETAILLOAN-WORK-GRP2 D-606!PERSONALDETAILSINTAKE"
+        themeID="Credera"
+        casePage="assignment"
+        appAlias="retail-loan-origination"
+        pegaServerUrl="https://areteans02.pegalabs.io/prweb/"
+        autoReauth="true"
+        authService="pega"
+        userIdentifier="BankUser"
+        password="cnVsZXM="
+        clientId="75587374610678951042"
+        style="width: 100%"
+      >
+      </pega-embed>
+      </div>
+    </div>
+    <!-- Server down message -->
+    <div class="pega-section" id="serverDownSection" style="display:none;">
+      <div class="server-down-screen visible">
+        <div class="server-down-icon">&#9888;</div>
+        <h2>Server is down</h2>
+        <p>Try again after sometime.</p>
+      </div>
+    </div>
+    <!-- Thank you confirmation screen -->
+    <div class="pega-section" id="thankYouSection" style="display:none;">
+      <div class="thank-you-screen visible">
+        <div class="thank-you-check">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h2>Thank You!</h2>
+        <div class="note-label"></div>
+        <p>Your application has been submitted for review!</p>
+      </div>
+    </div>
+    <script>
+      const getCaseIdEndpoint =
+        "https://areteans02.pegalabs.io/prweb/api/DynamicCase/v1/getDynamicId";
+
+      function showServerDown() {
+        var pegaSection = document.querySelector(".pega-section");
+        var serverDown = document.getElementById("serverDownSection");
+        if (pegaSection) pegaSection.style.display = "none";
+        if (serverDown) {
+          serverDown.style.display = "flex";
+          serverDown.style.justifyContent = "center";
+        }
+      }
+
+      async function fetchCaseId() {
+        try {
+          const response = await fetch(getCaseIdEndpoint, {
+            method: "GET",
+            header: {},
+          });
+          if (!response.ok) {
+            showServerDown();
+            return;
+          }
+          const data = await response.json();
+          if (!data || !data.AssignmentID) {
+            showServerDown();
+            return;
+          }
+          const caseId = data.AssignmentID;
+          let embedElement = document.getElementById("theEmbed");
+          embedElement.setAttribute("assignmentID", caseId);
+        } catch (e) {
+          showServerDown();
+        }
+      }
+      fetchCaseId();
+
+      // Also check if embed is still empty after 15 seconds
+      setTimeout(function() {
+        var embed = document.getElementById("theEmbed");
+        if (!embed) return;
+        var hasContent = false;
+        if (embed.shadowRoot) {
+          var text = (embed.shadowRoot.textContent || "").trim();
+          if (text.length > 10) hasContent = true;
+        }
+        if (!hasContent) showServerDown();
+      }, 15000);
+    </script>
+    <script>
+      // Inject orange asterisk styling into pega-embed shadow DOM
+      function injectPegaAsteriskStyles(root) {
+        const style = document.createElement("style");
+        style.textContent = `
+          .required-indicator,
+          [class*="required-indicator"],
+          abbr[title="required"],
+          .asterisk,
+          label .required,
+          [class*="requiredAsterisk"],
+          [class*="required-asterisk"],
+          span[class*="required"],
+          .psFieldLabel .required,
+          .field-required-indicator {
+            color: #ff5327 !important;
+          }
+          label::after,
+          .label--required::after {
+            color: #ff5327 !important;
+          }
+          .psui-assignment-header--meta,
+          .psui-assignment-header__meta,
+          [class*="assignment-header--meta"],
+          [class*="assignment-header__meta"],
+          [class*="assignmentHeader--meta"],
+          [class*="assignmentHeader__meta"],
+          [class*="header-meta"],
+          [class*="headerMeta"],
+          .psui-task-header--subtitle,
+          .psui-task-header__subtitle,
+          [class*="task-header--subtitle"],
+          [class*="task-header__subtitle"],
+          [class*="taskHeader--subtitle"],
+          [class*="taskHeader__subtitle"],
+          [class*="assignment-meta"],
+          [class*="assignmentMeta"],
+          [class*="case-info"],
+          [class*="caseInfo"],
+          [class*="urgency"],
+          [class*="assigned-to"],
+          [class*="assignedTo"] {
+            display: none !important;
+          }
+        `;
+        root.appendChild(style);
+      }
+
+      function tryInjectStyles() {
+        const embed = document.getElementById("theEmbed");
+        if (!embed) { setTimeout(tryInjectStyles, 300); return; }
+        if (embed.shadowRoot) {
+          injectPegaAsteriskStyles(embed.shadowRoot);
+          // Also watch for nested shadow roots (e.g. child components)
+          const observer = new MutationObserver(() => {
+            embed.shadowRoot.querySelectorAll("*").forEach((el) => {
+              if (el.shadowRoot) injectPegaAsteriskStyles(el.shadowRoot);
+            });
+          });
+          observer.observe(embed.shadowRoot, { childList: true, subtree: true });
+        } else {
+          setTimeout(tryInjectStyles, 300);
+        }
+      }
+      setTimeout(tryInjectStyles, 800);
+    </script>
+    <script>
+      // Auto-detect current Pega form step and update the vertical stepper
+      const stepKeywords = [
+        { step: 1, patterns: ["personal", "property"] },
+        { step: 2, patterns: ["eligibility"] },
+        { step: 3, patterns: ["employment"] },
+        { step: 4, patterns: ["income"] },
+        { step: 5, patterns: ["expense"] },
+        { step: 6, patterns: ["consent", "declaration"] },
+        { step: 7, patterns: ["submission", "case submission", "review", "summary", "confirmation"] }
+      ];
+
+      let lastDetectedStep = 0;
+
+      function detectStepFromHeading(root) {
+        let headingText = "";
+        root.querySelectorAll("h1, h2, h3, h4").forEach(function (h) {
+          if (h.offsetParent !== null && h.textContent.trim()) {
+            headingText += " " + h.textContent.toLowerCase();
+          }
+        });
+        // Also check nested shadow roots
+        root.querySelectorAll("*").forEach(function (el) {
+          if (el.shadowRoot) {
+            el.shadowRoot.querySelectorAll("h1, h2, h3, h4").forEach(function (h) {
+              if (h.textContent.trim()) headingText += " " + h.textContent.toLowerCase();
+            });
+          }
+        });
+        for (let i = 0; i < stepKeywords.length; i++) {
+          for (let j = 0; j < stepKeywords[i].patterns.length; j++) {
+            if (headingText.indexOf(stepKeywords[i].patterns[j]) !== -1) {
+              return stepKeywords[i].step;
+            }
+          }
+        }
+        return 0;
+      }
+
+      function updateStepper(currentStep) {
+        if (currentStep === 0 || currentStep === lastDetectedStep) return;
+        lastDetectedStep = currentStep;
+        var items = document.querySelectorAll("#progressStepper li");
+        items.forEach(function (li) {
+          var s = parseInt(li.getAttribute("data-step"), 10);
+          li.classList.remove("active", "completed");
+          if (s < currentStep) {
+            li.classList.add("completed");
+            li.querySelector(".step-circle").innerHTML = "&#10003;";
+          } else if (s === currentStep) {
+            li.classList.add("active");
+            li.querySelector(".step-circle").textContent = s;
+          } else {
+            li.querySelector(".step-circle").textContent = s;
+          }
+        });
+      }
+
+      function pollPegaStep() {
+        var embed = document.getElementById("theEmbed");
+        if (!embed || !embed.shadowRoot) return;
+        var step = detectStepFromHeading(embed.shadowRoot);
+        updateStepper(step);
+      }
+
+      // Run polling + mutation observer
+      setInterval(pollPegaStep, 1500);
+      (function observeForStepChange() {
+        var embed = document.getElementById("theEmbed");
+        if (!embed) { setTimeout(observeForStepChange, 500); return; }
+        if (!embed.shadowRoot) { setTimeout(observeForStepChange, 500); return; }
+        var obs = new MutationObserver(pollPegaStep);
+        obs.observe(embed.shadowRoot, { childList: true, subtree: true });
+      })();
+    </script>
+    <script>
+      // Detect "Open tasks" / submission screen and show thank-you instead
+      function checkForSubmission() {
+        var embed = document.getElementById("theEmbed");
+        if (!embed) return;
+        var allText = "";
+        // Check shadow DOM text
+        if (embed.shadowRoot) {
+          allText = embed.shadowRoot.textContent || "";
+        }
+        // Also check the element itself
+        allText += embed.textContent || "";
+
+        if (/open\s*tasks/i.test(allText) || /DisplayScreeningInputs/i.test(allText)) {
+          // Hide the pega form section and stepper, show thank you
+          var pegaSection = document.querySelector(".pega-section");
+          var thankYou = document.getElementById("thankYouSection");
+          if (pegaSection) pegaSection.style.display = "none";
+          if (thankYou) {
+            thankYou.style.display = "flex";
+            thankYou.style.justifyContent = "center";
+          }
+          // Mark all steps completed
+          var items = document.querySelectorAll("#progressStepper li");
+          items.forEach(function (li) {
+            li.classList.remove("active");
+            li.classList.add("completed");
+            li.querySelector(".step-circle").innerHTML = "&#10003;";
+          });
+        }
+      }
+      setInterval(checkForSubmission, 1500);
+      (function observeSubmission() {
+        var embed = document.getElementById("theEmbed");
+        if (!embed) { setTimeout(observeSubmission, 500); return; }
+        if (!embed.shadowRoot) { setTimeout(observeSubmission, 500); return; }
+        var obs = new MutationObserver(checkForSubmission);
+        obs.observe(embed.shadowRoot, { childList: true, subtree: true });
+      })();
+    </script>
+    <!-- Hero -->
+    <div class="hero">
+      <h1>Banking</h1>
+      <p>
+        Credera empowers banks with technology transformation strategies, new
+        digital solutions, and data-driven insights to enhance efficiency and
+        improve customer experiences.
+      </p>
+    </div>
+
+    <!-- Why It Matters -->
+    <section>
+      <p
+        style="
+          text-transform: uppercase;
+          font-weight: 600;
+          letter-spacing: 2px;
+          color: #ff5327;
+          margin-bottom: 8px;
+        "
+      >
+        WHY IT MATTERS
+      </p>
+      <h2>Accelerated growth and maximized efficiency.</h2>
+      <p>
+        To be successful, banks need the strategic combination of cutting-edge
+        technology expertise with a deep understanding of industry intricacies
+        and challenges. Banks need partners that can deliver insightful
+        guidance, leverage technology advances such as artificial intelligence
+        (AI) and machine learning (ML), help optimize processes within regulated
+        frameworks, and demonstrate superior delivery capabilities.
+      </p>
+
+      <div class="stat">&lt; 30%</div>
+      <p class="stat-source">
+        <a
+          href="https://www.mckinsey.com/capabilities/mckinsey-digital/our-insights/tech-forward/why-most-digital-banking-transformations-fail-and-how-to-flip-the-odds"
+          target="_blank"
+          >of banks are realizing their digital strategy objectives</a
+        >
+        through current transformation initiatives.
+      </p>
+
+      <h4>Offer integrated banking experience</h4>
+      <p>
+        Banks are struggling to manage legacy technical debt and regulatory
+        change. There is a need for much more effective digital transformation
+        covering critical legacy upgrades, data modernization, scaling with
+        cloud, and practical integration of emerging capabilities from AI/ML.
+      </p>
+
+      <h4>Approach to data</h4>
+      <p>
+        Increasingly sophisticated cyber threats combined with more stringent
+        regulations for privacy, data controls, and breach disclosure make
+        security and compliance a significant challenge. Banks require advanced
+        real-time threat intelligence, robust identity controls, and stronger
+        data analytics and management capabilities.
+      </p>
+      <ul>
+        <li>
+          Ensure protection for customer data against cyber threats and
+          potential breaches with security frameworks threat detection, using AI
+          and end-to-end encryption.
+        </li>
+        <li>
+          Leverage customer and client data to personalize services, tailor
+          recommendations and marketing messages, and improve financial advice
+          while managing consent and risks to privacy.
+        </li>
+        <li>
+          Establish data governance frameworks to ensure compliance with data
+          protection regulations.
+        </li>
+      </ul>
+
+      <h4>Innovation, agility, and partnerships</h4>
+      <p>
+        Banks need to rethink business models, partner quickly, and innovate
+        their products to prevent being disrupted. Propositions need to address
+        changing customer needs. These must be powered by advanced technologies
+        and experience-led delivery approaches that enable banks to scale and
+        incorporate new partners and services.
+      </p>
+    </section>
+
+    <!-- Related Insight -->
+    <section>
+      <div class="cards">
+        <div class="card">
+          <h5>
+            How a data 'A-Team' can help overcome systemic changes in banking
+          </h5>
+          <p>
+            Chief Data Officers (CDOs) need to rapidly establish an 'A-Team' to
+            define and execute disruptive change in order to stay relevant and
+            ensure they are meeting the needs of their digital transformation.
+          </p>
+          <a
+            href="https://www.credera.com/en-in/insights/how-a-data-a-team-can-help-overcome-systemic-changes-in-banking"
+            >READ NOW &rarr;</a
+          >
+        </div>
+      </div>
+    </section>
+
+    <!-- Driving Change -->
+    <section>
+      <p
+        style="
+          text-transform: uppercase;
+          font-weight: 600;
+          letter-spacing: 2px;
+          color: #ff5327;
+          margin-bottom: 8px;
+        "
+      >
+        OUR APPROACH
+      </p>
+      <h2>Driving change through transformation.</h2>
+      <p>
+        The financial services industry is changing faster than ever.
+        Re-invention to stay current with customers and adapting to compete for
+        new sources of value requires a fresh approach. We believe
+        transformation requires the right strategy, operating model, partners,
+        focus on quality, and disciplined execution.
+      </p>
+
+      <div class="cards">
+        <div class="card">
+          <h5>
+            Helping a FTSE 100 bank launch a standalone digital retail bank from
+            scratch
+          </h5>
+          <p>
+            Cloud native development, Data analytics, Data architecture, Data
+            strategy, Platform engineering
+          </p>
+          <a
+            href="https://www.credera.com/en-in/case-studies/helping-a-ftse-100-bank-launch-a-standalone-digital-retail-bank-from-scratch"
+            >READ CASE STUDY &rarr;</a
+          >
+        </div>
+      </div>
+    </section>
+
+    <!-- Experience the Difference -->
+    <div class="quote-section">
+      <p
+        style="
+          text-transform: uppercase;
+          font-weight: 600;
+          letter-spacing: 2px;
+          color: #ff5327;
+          margin-bottom: 8px;
+          max-width: 900px;
+          margin-left: auto;
+          margin-right: auto;
+        "
+      >
+        HOW WE CAN HELP
+      </p>
+      <h2
+        style="
+          max-width: 900px;
+          margin: 0 auto 24px;
+          font-size: 2rem;
+          color: #0a1628;
+        "
+      >
+        Experience the difference.
+      </h2>
+      <p style="max-width: 900px; margin: 0 auto 24px">
+        At Credera, one of our core values is excellence. Our expertise,
+        experience, and focus on quality delivery outcomes help our banking
+        clients launch innovative solutions that improve revenue growth,
+        identify sustainable operating efficiencies, and make transformation a
+        reality.
+      </p>
+      <p style="max-width: 900px; margin: 0 auto 24px">
+        We call this
+        <a href="https://www.credera.com/en-in/about-us/the-credera-difference"
+          >the Credera Difference</a
+        >, and we invite you to hear directly from some of our clients about
+        their experiences working with us. As both retail and commercial banks
+        face changes on their core balance sheets, distribution approaches, and
+        transaction processing, our deep understanding of technology and the
+        market can support these challenges.
+      </p>
+      <ul style="max-width: 900px; margin: 0 auto 24px; padding-left: 20px">
+        <li>
+          Read about how we redefined this
+          <a
+            href="https://www.credera.com/en-in/case-studies/moving-a-major-retail-bank-to-a-brand-new-google-cloud-platform"
+            >FTSE 100 bank's</a
+          >
+          customer platform.
+        </li>
+        <li>
+          Learn how Credera transformed market abuse and conduct surveillance
+          for a
+          <a
+            href="https://www.credera.com/en-in/case-studies/transforming-market-abuse-and-conduct-surveillance-for-a-global-banking"
+            >global banking group</a
+          >.
+        </li>
+      </ul>
+      <blockquote>
+        From over 30 years of working in banking and across financial services,
+        Credera recognizes the paramount challenge facing banks today lies in
+        navigating unprecedented macroeconomic changes, global uncertainty, and
+        ever-increasing compliance requirements. Embracing transformative
+        technologies for modernization while ensuring seamless integration is
+        pivotal for sustained growth and resilience in this evolving landscape.
+      </blockquote>
+      <p class="author">
+        &mdash; Ray Panditharatna, Head of Financial Services &amp; Insurance,
+        Credera
+      </p>
+    </div>
+
+    <!-- Our Experts -->
+    <section>
+      <p
+        style="
+          text-transform: uppercase;
+          font-weight: 600;
+          letter-spacing: 2px;
+          color: #ff5327;
+          margin-bottom: 8px;
+        "
+      >
+        OUR EXPERTS
+      </p>
+      <h2>We're available to talk—and here to help.</h2>
+      <p>
+        At Credera, we're only as good as our people, and we bring a highly
+        skilled and diverse set of experts together for the benefit of our
+        clients.
+      </p>
+
+      <div class="experts">
+        <div class="expert">
+          <h5>Gail Stout Perry</h5>
+          <p>Partner and Financial Services Industry Lead</p>
+          <p>Dallas</p>
+        </div>
+        <div class="expert">
+          <h5>Jerilyn Huddleston</h5>
+          <p>Experience Strategy</p>
+          <p>Dallas</p>
+        </div>
+        <div class="expert">
+          <h5>Peter Hardie</h5>
+          <p>Managing Director</p>
+          <p>London</p>
+        </div>
+        <div class="expert">
+          <h5>Helene Trontz</h5>
+          <p>Transformation Strategy</p>
+          <p>New York</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Case Studies -->
+    <section>
+      <h2>Case studies</h2>
+      <div class="cards">
+        <div class="card">
+          <p
+            style="
+              text-transform: uppercase;
+              font-size: 0.8rem;
+              font-weight: 600;
+              color: #ff5327;
+            "
+          >
+            RETAIL BANK
+          </p>
+          <h5>
+            Moving a major retail bank to a brand-new Google Cloud platform
+          </h5>
+          <p>
+            Credera successfully led the delivery of a minimum viable product
+            for this FTSE 100 retail bank within nine months.
+          </p>
+          <a
+            href="https://www.credera.com/en-in/case-studies/moving-a-major-retail-bank-to-a-brand-new-google-cloud-platform"
+            >READ MORE &rarr;</a
+          >
+        </div>
+        <div class="card">
+          <p
+            style="
+              text-transform: uppercase;
+              font-size: 0.8rem;
+              font-weight: 600;
+              color: #ff5327;
+            "
+          >
+            GLOBAL BANK
+          </p>
+          <h5>
+            Transforming market abuse and conduct surveillance for a global
+            banking group
+          </h5>
+          <p>
+            Credera defined and implemented business operating model change and
+            technology target state to increase effectiveness, efficiency and
+            sustainability of the Surveillance function.
+          </p>
+          <a
+            href="https://www.credera.com/en-in/case-studies/transforming-market-abuse-and-conduct-surveillance-for-a-global-banking"
+            >READ MORE &rarr;</a
+          >
+        </div>
+        <div class="card">
+          <p
+            style="
+              text-transform: uppercase;
+              font-size: 0.8rem;
+              font-weight: 600;
+              color: #ff5327;
+            "
+          >
+            TRIUMPH BUSINESS CAPITAL
+          </p>
+          <h5>Leveraging a custom platform to outperform the competition</h5>
+          <p>
+            Credera and Triumph Business Capital improve customer experience and
+            streamline operations with a custom platform.
+          </p>
+          <a
+            href="https://www.credera.com/en-in/case-studies/triumph-custom-platform"
+            >READ MORE &rarr;</a
+          >
+        </div>
+      </div>
+    </section>
+
+    <!-- Offerings -->
+    <section>
+      <p
+        style="
+          text-transform: uppercase;
+          font-weight: 600;
+          letter-spacing: 2px;
+          color: #ff5327;
+          margin-bottom: 8px;
+        "
+      >
+        OFFERINGS
+      </p>
+      <h2>
+        Explore our offerings in the retail and commercial banking industry.
+      </h2>
+      <p>
+        We work closely with our retail and commercial banking customers to
+        understand their unique needs, desired objectives, and the nuance of
+        their problems to develop strategies and programs that achieve great
+        results.
+      </p>
+
+      <div class="offerings">
+        <div class="offering">
+          <h5>AI strategy &amp; value realization</h5>
+          <p>
+            Maximize your AI investments. Our strategies help you identify,
+            implement, and scale AI initiatives for significant ROI across your
+            enterprise.
+          </p>
+          <a
+            href="https://www.credera.com/en-in/services/technology-and-data-excellence/ai-strategy-and-value-realization"
+            >EXPLORE FURTHER &rarr;</a
+          >
+        </div>
+        <div class="offering">
+          <h5>Technology modernization</h5>
+          <p>
+            Transform legacy systems into modern, cloud-native platforms to
+            drive business growth and innovation.
+          </p>
+          <a
+            href="https://www.credera.com/en-in/services/technology-and-data-excellence/technology-modernization"
+            >EXPLORE FURTHER &rarr;</a
+          >
+        </div>
+        <div class="offering">
+          <h5>MarTech strategy &amp; implementation</h5>
+          <p>
+            Transform complexity into competitive advantage through strategic
+            marketing technology selection, architecture, and integration.
+          </p>
+          <a
+            href="https://www.credera.com/en-in/services/marketing-and-advertising-enablement/martech-strategy-and-implementation"
+            >EXPLORE FURTHER &rarr;</a
+          >
+        </div>
+        <div class="offering">
+          <h5>Personalization at scale</h5>
+          <p>
+            Create seamless, AI-powered personalized experiences that drive
+            engagement across all digital and physical touchpoints.
+          </p>
+          <a
+            href="https://www.credera.com/en-in/services/marketing-and-advertising-enablement/personalization-at-scale"
+            >EXPLORE FURTHER &rarr;</a
+          >
+        </div>
+      </div>
+    </section>
+
+    <!-- Related Insights -->
+    <section>
+      <p
+        style="
+          text-transform: uppercase;
+          font-weight: 600;
+          letter-spacing: 2px;
+          color: #ff5327;
+          margin-bottom: 8px;
+        "
+      >
+        RELATED INSIGHTS
+      </p>
+      <div class="cards">
+        <div class="card">
+          <p style="font-size: 0.8rem; color: #666">BLOG &bull; Sep 28, 2023</p>
+          <h5>
+            Driving innovation, inclusion, and ethical AI: Credera at the FCA
+            Women in Tech &amp; AWS Cloud event
+          </h5>
+          <p>
+            In this blog, we summarise some of our key highlights and learnings
+            from the FCA Women in Tech &amp; AWS Cloud event.
+          </p>
+          <a
+            href="https://www.credera.com/en-in/insights/driving-innovation-inclusion-and-ethical-ai-credera-at-the-fca-women-in-tech-aws-cloud-event"
+            >READ MORE &rarr;</a
+          >
+        </div>
+        <div class="card">
+          <p style="font-size: 0.8rem; color: #666">BLOG &bull; Aug 2, 2023</p>
+          <h5>
+            Unlocking cloud cost efficiency: The benefits of adopting FinOps for
+            businesses
+          </h5>
+          <p>
+            In this blog, we explore some of the benefits behind adopting FinOps
+            and why it should matter to your organization.
+          </p>
+          <a
+            href="https://www.credera.com/en-in/insights/unlocking-cloud-cost-efficiency-the-benefits-of-adopting-finops-for-businesses"
+            >READ MORE &rarr;</a
+          >
+        </div>
+        <div class="card">
+          <p style="font-size: 0.8rem; color: #666">BLOG &bull; Aug 28, 2020</p>
+          <h5>
+            Public Cloud in Financial Services: Navigating a changing regulatory
+            environment
+          </h5>
+          <p>
+            This article offers practical advice on how to navigate a changing
+            regulatory environment with regards to the EBA guidance.
+          </p>
+          <a
+            href="https://www.credera.com/en-in/insights/public-cloud-in-financial-services-navigating-a-changing-regulatory-environment"
+            >READ MORE &rarr;</a
+          >
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact / Let's Talk -->
+    <div class="contact">
+      <h2>Let's talk!</h2>
+      <p>
+        We're ready to help turn your biggest challenges into your biggest
+        advantages.
+      </p>
+      <form>
+        <label>First Name *</label>
+        <input type="text" required />
+        <label>Last Name *</label>
+        <input type="text" required />
+        <label>Email Address *</label>
+        <input type="email" required />
+        <label>Phone</label>
+        <input type="tel" />
+        <label>Company *</label>
+        <input type="text" required />
+        <label>Title *</label>
+        <input type="text" required />
+        <label>How can we help you? *</label>
+        <textarea required></textarea>
+        <label>Location *</label>
+        <input type="text" required />
+        <label>How did you hear about us?</label>
+        <input type="text" />
+        <div style="margin: 16px 0">
+          <label
+            ><input type="checkbox" /> I agree to receive communications from
+            Credera.</label
+          >
+        </div>
+        <p style="font-size: 0.85rem; opacity: 0.7">
+          By clicking "Submit," you consent to Credera storing and processing
+          your personal information. If you would like to withdraw your consent,
+          please see further information, as outlined in the
+          <a
+            href="https://credera.com/en-in/europe-asia-pacific-privacy-notice"
+            style="color: #6cb4ff"
+            >Europe | Asia-Pacific Privacy Notice</a
+          >.
+        </p>
+        <button type="submit">SUBMIT</button>
+      </form>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-grid">
+        <div>
+          <h6>Explore</h6>
+          <a href="https://www.credera.com/en-in/industries">Industries</a>
+          <a href="https://www.credera.com/en-in/partnerships">Partners</a>
+          <a href="https://www.credera.com/en-in/insights">Insights</a>
+        </div>
+        <div>
+          <h6>About Us</h6>
+          <a href="https://www.credera.com/en-in/about-us/our-leadership"
+            >Leadership</a
+          >
+          <a href="https://www.credera.com/en-in/careers">Careers</a>
+          <a href="https://www.credera.com/en-in/contact">Contact Us</a>
+        </div>
+        <div>
+          <h6>Legal</h6>
+          <a
+            href="https://www.credera.com/en-in/europe-asia-pacific-privacy-notice"
+            >Europe | Asia-Pacific Privacy Notice</a
+          >
+          <a href="https://www.credera.com/en-in/cookie-notice"
+            >Cookie Settings</a
+          >
+        </div>
+        <div>
+          <h6>Follow Us</h6>
+          <a href="https://www.linkedin.com/company/credera">LinkedIn</a>
+          <a href="https://www.instagram.com/lifeatcredera/">Instagram</a>
+          <a href="https://www.youtube.com/@CrederaVideo">YouTube</a>
+        </div>
+      </div>
+      <p class="copyright">
+        Copyright &copy; 2026 Credera. All rights reserved.
+      </p>
+    </footer>
+  </body>
 </html>
